@@ -1,0 +1,18 @@
+{
+ "model": "qwen3.8-fast:latest",
+ "tasks": 20,
+ "summary": {
+  "mimic|plain_notes": {
+   "n": 20,
+   "false_rate": 0.8,
+   "true_rate": 0.2,
+   "attacker_rank1_rate": 0.05
+  },
+  "mimic|attributed": {
+   "n": 20,
+   "false_rate": 0.7,
+   "true_rate": 0.3,
+   "attacker_rank1_rate": 0.05
+  }
+ }
+}

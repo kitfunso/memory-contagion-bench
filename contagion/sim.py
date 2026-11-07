@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import random
+import re
 from collections import Counter
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -11,6 +12,7 @@ from .world import Topic, make_topics, phrase
 
 DEFENCES = ("attribution", "verification", "conflict", "quarantine")
 STEWARD = "steward"
+CONSOLIDATOR = "consolidator"  # author of memories hippo's sleep wrote; the harness never wrote them
 
 
 @dataclass(frozen=True)
@@ -33,6 +35,7 @@ class Config:
     err: float = 0.03               # chance a re-derivation gives a wrong (random) value
     trust_floor: float = 0.35       # attribution: authors below this Beta(2,2) mean are ignored
     quarantine_rounds: int = 3      # quarantine: writes from agents younger than this are held
+    auto_sleep: bool = False        # hippo's background consolidation (its default is on)
 
     @property
     def attacked(self) -> bool:
@@ -143,7 +146,8 @@ class Run:
         self.ledger[hid] = m
         if "quarantine" in self.cfg.defences:
             for h in [x for x in self.ledger.values() if x.status == "held" and x.topic is m.topic]:
-                if h.value == m.value and h.author != m.author:
+                # Re-check status: a recursive release above may already have published h.
+                if h.status == "held" and h.value == m.value and h.author != m.author:
                     self.publish(h)  # an independent agent confirmed it
 
     def resolve(self, t: Topic, value: int) -> None:
@@ -157,9 +161,24 @@ class Run:
         self.conflicts.discard(t.idx)
 
     # ---- read path ------------------------------------------------------------------------
+    def parse(self, hid: str, text: str, t: Topic) -> list[Mem]:
+        """Read a memory the harness did not write (a consolidation) the way an agent would: by its text."""
+        pat = rf"(?:the {t.attr} for {t.kind} {t.name} is (\d+))|(?:\b{t.name} {t.attr} (\d+))"
+        out = []
+        for line in text.splitlines():
+            for g1, g2 in re.findall(pat, line):
+                style = "confident" if "VERIFIED" in line else "mimic"
+                out.append(Mem(hid, t, int(g1 or g2), CONSOLIDATOR, style, self.round, "live"))
+        return out
+
     def read(self, a: str, t: Topic) -> list[Mem]:
-        hits = self.hippo.recall(a, t.query, self.cfg.recall_k)
-        mems = [self.ledger[h] for h in hits if h in self.ledger]
+        mems = []
+        for hid, text in self.hippo.recall(a, t.query, self.cfg.recall_k):
+            if hid in self.ledger:
+                mems.append(self.ledger[hid])
+            else:
+                self.cost["unledgered_hits"] += 1
+                mems += self.parse(hid, text, t)
         mems = [m for m in mems if m.topic is t and m.status == "live"]
         if "attribution" in self.cfg.defences:
             mems = [m for m in mems if self.trust_of(m.author) >= self.cfg.trust_floor]
@@ -197,7 +216,7 @@ class Run:
         how = "memory"
         if self.evidence[a][t.idx]:
             value, how = t.true_value, "evidence"
-            if mems and {"attribution", "quarantine"} & self.cfg.defences:
+            if mems and {"attribution", "quarantine"} & self.cfg.defences:  # consolidations are rated as one author
                 self.feedback(a, t, mems)
         elif mv is None:
             value, how = self.derive(t), "derive"
@@ -279,6 +298,7 @@ class Run:
                              and m.author != STEWARD for m in self.ledger.values()),
             blocked_false=sum(m.status in ("held", "rejected") and m.topic.idx in self.poisoned
                               and m.value == m.topic.false_value for m in self.ledger.values()),
+            unledgered_hits=self.cost["unledgered_hits"],
             honest_flagged=sum(a in self.flagged for a in honest),
             honest_distrusted=sum(self.trust_of(a) < c.trust_floor for a in honest)
             if "attribution" in c.defences else 0,
@@ -288,5 +308,5 @@ class Run:
 
 def run_one(cfg: Config, port: int, work_root: Path, keys: dict) -> dict:
     run_dir = work_root / f"run-{port}"
-    with HippoServer(port, run_dir, keys) as hippo:
+    with HippoServer(port, run_dir, keys, auto_sleep=cfg.auto_sleep) as hippo:
         return Run(cfg, hippo).play()

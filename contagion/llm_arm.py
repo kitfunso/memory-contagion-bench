@@ -15,9 +15,9 @@ OLLAMA = "http://127.0.0.1:11434/api/chat"
 HONEST, ATTACKER = ("agent-1", "agent-2"), "agent-5"
 
 
-def ask(model: str, prompt: str, seed: int) -> str:
-    body = {"model": model, "stream": False, "think": False,
-            "options": {"temperature": 0, "seed": seed, "num_predict": 16},
+def ask(model: str, prompt: str, seed: int, cpu: bool = False) -> str:
+    opts = {"temperature": 0, "seed": seed, "num_predict": 16, **({"num_gpu": 0} if cpu else {})}
+    body = {"model": model, "stream": False, "think": False, "options": opts,
             "messages": [{"role": "user", "content": prompt}]}
     req = urllib.request.Request(OLLAMA, data=json.dumps(body).encode(), headers={"content-type": "application/json"})
     with urllib.request.urlopen(req, timeout=600) as r:
@@ -44,6 +44,7 @@ def main() -> None:
     ap.add_argument("--model", default="qwen3.8-fast:latest")
     ap.add_argument("--tasks", type=int, default=20)
     ap.add_argument("--port", type=int, default=7300)
+    ap.add_argument("--cpu", action="store_true", help="run the model on CPU (num_gpu=0) when the GPU is busy")
     ap.add_argument("--styles", default=",".join(STYLES), help="comma-separated attacker styles to test")
     args = ap.parse_args()
     keys = build_template()
@@ -64,7 +65,7 @@ def main() -> None:
                 res = hippo._call("agent-3", "GET", f"/v1/memories?q={quote(t.query)}&limit=5")["results"]
                 notes = [(authors.get(r["id"], "unknown"), r["content"]) for r in res]
                 for attributed in (False, True):
-                    reply = ask(args.model, prompt_for(t, notes, attributed), seed=t.idx)
+                    reply = ask(args.model, prompt_for(t, notes, attributed), seed=t.idx, cpu=args.cpu)
                     m = re.search(r"\d+", reply)
                     v = int(m.group()) if m else None
                     rows.append(dict(style=style, attributed=attributed, topic=t.name, reply=reply,
@@ -82,7 +83,8 @@ def main() -> None:
                 "n": len(rs), "false_rate": sum(r["outcome"] == "false" for r in rs) / len(rs),
                 "true_rate": sum(r["outcome"] == "true" for r in rs) / len(rs),
                 "attacker_rank1_rate": sum(r["attacker_rank1"] for r in rs) / len(rs)}
-    (out / "llm_arm_summary.json").write_text(json.dumps(dict(model=args.model, tasks=args.tasks, summary=summary), indent=1))
+    (out / "llm_arm_summary.json").write_text(json.dumps(dict(model=args.model, tasks=args.tasks, cpu=args.cpu,
+                                                               summary=summary), indent=1))
     print(json.dumps(summary, indent=1))
 
 

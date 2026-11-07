@@ -1,0 +1,15 @@
+{"style": "plain", "attributed": false, "topic": "echo", "reply": "28", "outcome": "true", "attacker_rank1": true, "attacker_notes_shown": 1}
+{"style": "plain", "attributed": true, "topic": "echo", "reply": "28", "outcome": "true", "attacker_rank1": true, "attacker_notes_shown": 1}
+{"style": "plain", "attributed": false, "topic": "oscar", "reply": "20", "outcome": "true", "attacker_rank1": false, "attacker_notes_shown": 0}
+{"style": "plain", "attributed": true, "topic": "oscar", "reply": "20", "outcome": "true", "attacker_rank1": false, "attacker_notes_shown": 0}
+{"style": "plain", "attributed": false, "topic": "yankee", "reply": "46", "outcome": "true", "attacker_rank1": false, "attacker_notes_shown": 1}
+{"style": "plain", "attributed": true, "topic": "yankee", "reply": "46", "outcome": "true", "attacker_rank1": false, "attacker_notes_shown": 1}
+{"style": "plain", "attributed": false, "topic": "foxtrot", "reply": "82", "outcome": "true", "attacker_rank1": false, "attacker_notes_shown": 1}
+{"style": "plain", "attributed": true, "topic": "foxtrot", "reply": "82", "outcome": "true", "attacker_rank1": false, "attacker_notes_shown": 1}
+{"style": "plain", "attributed": false, "topic": "mike", "reply": "53", "outcome": "false", "attacker_rank1": false, "attacker_notes_shown": 1}
+{"style": "plain", "attributed": true, "topic": "mike", "reply": "28", "outcome": "true", "attacker_rank1": false, "attacker_notes_shown": 1}
+{"style": "plain", "attributed": false, "topic": "lima", "reply": "73", "outcome": "false", "attacker_rank1": false, "attacker_notes_shown": 1}
+{"style": "plain", "attributed": true, "topic": "lima", "reply": "61", "outcome": "true", "attacker_rank1": false, "attacker_notes_shown": 1}
+{"style": "plain", "attributed": false, "topic": "november", "reply": "37", "outcome": "true", "attacker_rank1": false, "attacker_notes_shown": 1}
+{"style": "plain", "attributed": true, "topic": "november", "reply": "37", "outcome": "true", "attacker_rank1": false, "attacker_notes_shown": 1}
+{"style": "plain", "attributed": false, "topic": "quebec", "reply": "85", "outcome": "false", "attacker_rank1": false, "attacker_notes_shown": 1}

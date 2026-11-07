@@ -4,22 +4,24 @@ A small benchmark that asks one question: **if one agent in a team turns bad and
 
 Built over the Apart Research Swarm Alignment Sprint weekend (6 to 8 November 2026), Track 2, by Kit Fun So (KITFUNSO LTD, London). The report is in the sprint submission. The code, results and figures are all here.
 
-## Headline results (720 runs, 10 seeds per cell)
+## Headline results (760 runs, 10 seeds per cell)
 
 Insider attacker in the team template ("mimic") style, 6 agents, from `results/table_main.csv`:
 
 | Defence | Share of honest agents infected, mean [min, max] | Work per task (no attack) | Correct memories blocked (no attack) |
 |---|---|---|---|
-| none | 0.92 [0.6, 1.0] | 0.17 (0.15) | 0.0 |
-| source attribution | 0.50 [0.0, 1.0] | 0.18 (0.16) | 0.0 |
-| independent verification | 0.00 [0.0, 0.0] | 1.15 (1.10) | 6.3 |
-| conflict alerts | 0.00 [0.0, 0.0] | 0.26 (0.17) | 0.0 |
-| quarantine | 0.60 [0.0, 1.0] | 0.19 (0.15) | 7.7 |
-| all four | 0.00 [0.0, 0.0] | 1.15 (1.11) | 6.2 |
+| none | 0.94 [0.6, 1.0] | 0.17 (0.14) | 0.0 |
+| source attribution | 0.54 [0.0, 1.0] | 0.17 (0.14) | 0.0 |
+| independent verification | 0.00 [0.0, 0.0] | 1.14 (1.10) | 6.3 |
+| conflict alerts | 0.00 [0.0, 0.0] | 0.25 (0.15) | 0.0 |
+| quarantine | 0.74 [0.0, 1.0] | 0.17 (0.14) | 10.0 |
+| all four | 0.00 [0.0, 0.0] | 1.14 (1.10) | 6.3 |
 
-- With no defence, spread keeps rising after the attacker leaves. Honest agents rewrite the false fact under their own names: 21.2 of the 47.2 false memories still live at the end were written by honest agents.
-- Against a newcomer, quarantine cuts spread from 0.94 to 0.20. Against an insider it reaches only 0.60.
+- With no defence, spread keeps rising after the attacker leaves. Honest agents rewrite the false fact under their own names: 17.6 of the 43.6 false memories still live at the end were written by honest agents.
+- Against a newcomer, quarantine cuts spread from 0.94 to 0.26. Against an insider it reaches 0.74.
 - hippo-memory 3.3.3's built-in conflict detector (run in `hippo sleep`) flags an always/never pair but not "is 3" against "is 9" (`scripts/hippo_conflict_check.sh`). The conflict defence here uses an exact check on structured values, so its result is an upper bound for a text-level detector.
+- With hippo's default background consolidation on (insider, no defence), spread is 0.82 to 0.98 by style, and consolidated memories carry no writer.
+- LLM arm (local qwen3.8-fast 27B on CPU, mimic style, 20 tasks): with unlabelled notes the model chose the attacker's value 20 of 20 times; with author-trust labels, the true value 20 of 20 times (`results/llm_arm_summary.json`).
 
 ## Reproduce in one command
 
@@ -27,7 +29,7 @@ Needs Node 22.16+ and Python 3.12+.
 
 ```bash
 python -m venv .venv && .venv/Scripts/pip install -r requirements.txt   # or .venv/bin/pip on Linux/macOS
-.venv/Scripts/python reproduce.py          # npm ci if needed, then the full grid (656 runs), then figures
+.venv/Scripts/python reproduce.py          # npm ci if needed, then the full grid (760 runs), then figures
 ```
 
 The grid takes about 15 minutes on 10 processes. It writes `results/runs.jsonl` (one line per run), `results/runs.csv`, `results/summary.json` and `results/summary.csv` (mean, min and max across seeds per cell), `results/table_main.csv`, and the four figures in `results/figures/`. A rerun skips runs that are already in `runs.jsonl`. Delete that file to start fresh.
@@ -48,6 +50,12 @@ Check of hippo's own conflict detector on a numeric contradiction: `bash scripts
   - `quarantine`: memories from agents in their first 3 rounds, or from agents someone flagged, are held until another agent writes the same value.
 - **Measures**: spread rate (share of honest agents that acted on a false memory at least once), time to first contagion, persistence (rounds after the attacker left in which a reader's memory answer was still false), false memories still live at the end, laundered writes (false memories written by honest agents), task accuracy, and cost (work per task: re-derivations plus checks; reads per task; correct memories blocked).
 - **Seeds**: 10 per cell. All agent behaviour is seeded and LLM-free, so a run is reproducible up to hippo's own ranking of tied items.
+
+## Store settings and superseded results
+
+hippo-memory's default `autoSleep` consolidates the store in the background after 50 new writes. It merges memories into `sem_*` summaries with new ids and no writer. The main grid turns it off (`autoSleep.enabled=false` in each run's `.hippo/config.json`), so the store under test is hippo's recall, outcome and supersede only. A separate `auto_sleep` block (insider, no defence) runs hippo as shipped. In every run the reader parses any memory the harness did not write, and `unledgered_hits` counts how often that happened. It is 0 in every run of the main grid.
+
+`results/superseded/` keeps two earlier result sets, for the record. In one, auto-sleep was on but the reader ignored consolidated memories. In the other, the LLM arm's store consolidated mid-run, so its author labels were wrong. Neither is used in the report. The same self-check also caught a quarantine release that could publish one memory twice; it was fixed and the 250 quarantine runs were rerun.
 
 ## Pre-existing code
 

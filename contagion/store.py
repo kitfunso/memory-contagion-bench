@@ -64,6 +64,7 @@ class HippoServer:
     port: int
     run_dir: Path
     keys: dict
+    auto_sleep: bool = False  # hippo's default is on: consolidate after 50 new writes
     proc: subprocess.Popen | None = None
     conn: http.client.HTTPConnection | None = None
     reads: int = 0
@@ -74,6 +75,7 @@ class HippoServer:
             shutil.rmtree(self.run_dir, ignore_errors=True)
         shutil.copytree(TEMPLATE, self.run_dir, ignore=shutil.ignore_patterns("keys.json"))
         store = self.run_dir / "store"
+        (store / ".hippo" / "config.json").write_text(json.dumps({"autoSleep": {"enabled": self.auto_sleep}}))
         self.proc = subprocess.Popen(["node", str(HIPPO_JS), "serve", "--port", str(self.port)],
                                      cwd=store, env=_env(self.run_dir / "home"),
                                      stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
@@ -120,10 +122,11 @@ class HippoServer:
         self.writes += 1
         return self._call(who, "POST", "/v1/memories", {"content": content, "tags": tags})["id"]
 
-    def recall(self, who: str, query: str, limit: int = 5) -> list[str]:
+    def recall(self, who: str, query: str, limit: int = 5) -> list[tuple[str, str]]:
+        """(id, content) pairs in hippo's rank order."""
         self.reads += 1
         q = urllib.parse.quote(query)
-        return [r["id"] for r in self._call(who, "GET", f"/v1/memories?q={q}&limit={limit}")["results"]]
+        return [(r["id"], r["content"]) for r in self._call(who, "GET", f"/v1/memories?q={q}&limit={limit}")["results"]]
 
     def outcome(self, who: str, mem_id: str, good: bool) -> None:
         self._call(who, "POST", "/v1/outcome", {"good": good, "ids": [mem_id]})

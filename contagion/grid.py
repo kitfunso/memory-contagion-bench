@@ -25,7 +25,7 @@ DEFENCE_SETS = {
 METRICS = ("spread_rate", "first_contagion_round", "false_adoptions", "persistence_rounds", "false_live_end",
            "laundered_writes", "accuracy", "accuracy_attack_window", "accuracy_poisoned", "work_per_task",
            "reads_per_task", "conflict_alerts", "supersedes", "blocked_true", "blocked_false",
-           "honest_flagged", "honest_distrusted")
+           "honest_flagged", "honest_distrusted", "unledgered_hits")
 
 
 def configs(seeds: int) -> list[tuple[str, Config]]:
@@ -37,6 +37,8 @@ def configs(seeds: int) -> list[tuple[str, Config]]:
                     out.append(("main", Config(seed=seed, defences=d, style=style, scenario=scenario)))
             for style in ("plain", "confident", "mimic"):
                 out.append(("reader_top1", Config(seed=seed, defences=d, style=style, reader="top1")))
+        for style in ("plain", "confident", "mimic", "none"):  # hippo as shipped: auto-sleep on
+            out.append(("auto_sleep", Config(seed=seed, style=style, auto_sleep=True)))
         for n in (4, 6, 10):
             for dname in ("none", "all"):
                 out.append(("team_size", Config(seed=seed, defences=DEFENCE_SETS[dname], style="mimic",

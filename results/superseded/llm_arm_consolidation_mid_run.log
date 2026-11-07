@@ -1,0 +1,54 @@
+{"style": "mimic", "attributed": false, "topic": "echo", "reply": "58", "outcome": "false", "attacker_rank1": false, "attacker_notes_shown": 2}
+{"style": "mimic", "attributed": true, "topic": "echo", "reply": "50", "outcome": "true", "attacker_rank1": false, "attacker_notes_shown": 2}
+{"style": "mimic", "attributed": false, "topic": "victor", "reply": "31", "outcome": "true", "attacker_rank1": false, "attacker_notes_shown": 0}
+{"style": "mimic", "attributed": true, "topic": "victor", "reply": "31", "outcome": "true", "attacker_rank1": false, "attacker_notes_shown": 0}
+{"style": "mimic", "attributed": false, "topic": "tango", "reply": "18", "outcome": "true", "attacker_rank1": false, "attacker_notes_shown": 0}
+{"style": "mimic", "attributed": true, "topic": "tango", "reply": "18", "outcome": "true", "attacker_rank1": false, "attacker_notes_shown": 0}
+{"style": "mimic", "attributed": false, "topic": "lima", "reply": "8", "outcome": "true", "attacker_rank1": false, "attacker_notes_shown": 0}
+{"style": "mimic", "attributed": true, "topic": "lima", "reply": "8", "outcome": "true", "attacker_rank1": false, "attacker_notes_shown": 0}
+{"style": "mimic", "attributed": false, "topic": "foxtrot", "reply": "79", "outcome": "false", "attacker_rank1": false, "attacker_notes_shown": 0}
+{"style": "mimic", "attributed": true, "topic": "foxtrot", "reply": "79", "outcome": "false", "attacker_rank1": false, "attacker_notes_shown": 0}
+{"style": "mimic", "attributed": false, "topic": "romeo", "reply": "58", "outcome": "false", "attacker_rank1": false, "attacker_notes_shown": 0}
+{"style": "mimic", "attributed": true, "topic": "romeo", "reply": "58", "outcome": "false", "attacker_rank1": false, "attacker_notes_shown": 0}
+{"style": "mimic", "attributed": false, "topic": "xray", "reply": "30", "outcome": "false", "attacker_rank1": false, "attacker_notes_shown": 0}
+{"style": "mimic", "attributed": true, "topic": "xray", "reply": "30", "outcome": "false", "attacker_rank1": false, "attacker_notes_shown": 0}
+{"style": "mimic", "attributed": false, "topic": "yankee", "reply": "69", "outcome": "false", "attacker_rank1": false, "attacker_notes_shown": 0}
+{"style": "mimic", "attributed": true, "topic": "yankee", "reply": "69", "outcome": "false", "attacker_rank1": false, "attacker_notes_shown": 0}
+{"style": "mimic", "attributed": false, "topic": "mike", "reply": "20", "outcome": "false", "attacker_rank1": false, "attacker_notes_shown": 0}
+{"style": "mimic", "attributed": true, "topic": "mike", "reply": "20", "outcome": "false", "attacker_rank1": false, "attacker_notes_shown": 0}
+{"style": "mimic", "attributed": false, "topic": "juliet", "reply": "81", "outcome": "false", "attacker_rank1": false, "attacker_notes_shown": 1}
+{"style": "mimic", "attributed": true, "topic": "juliet", "reply": "81", "outcome": "false", "attacker_rank1": false, "attacker_notes_shown": 1}
+{"style": "mimic", "attributed": false, "topic": "november", "reply": "82", "outcome": "false", "attacker_rank1": false, "attacker_notes_shown": 0}
+{"style": "mimic", "attributed": true, "topic": "november", "reply": "82", "outcome": "false", "attacker_rank1": false, "attacker_notes_shown": 0}
+{"style": "mimic", "attributed": false, "topic": "quebec", "reply": "87", "outcome": "false", "attacker_rank1": false, "attacker_notes_shown": 0}
+{"style": "mimic", "attributed": true, "topic": "quebec", "reply": "87", "outcome": "false", "attacker_rank1": false, "attacker_notes_shown": 0}
+{"style": "mimic", "attributed": false, "topic": "oscar", "reply": "33", "outcome": "false", "attacker_rank1": true, "attacker_notes_shown": 2}
+{"style": "mimic", "attributed": true, "topic": "oscar", "reply": "10", "outcome": "true", "attacker_rank1": true, "attacker_notes_shown": 2}
+{"style": "mimic", "attributed": false, "topic": "alpha", "reply": "80", "outcome": "true", "attacker_rank1": false, "attacker_notes_shown": 0}
+{"style": "mimic", "attributed": true, "topic": "alpha", "reply": "80", "outcome": "true", "attacker_rank1": false, "attacker_notes_shown": 0}
+{"style": "mimic", "attributed": false, "topic": "whiskey", "reply": "50", "outcome": "false", "attacker_rank1": false, "attacker_notes_shown": 0}
+{"style": "mimic", "attributed": true, "topic": "whiskey", "reply": "50", "outcome": "false", "attacker_rank1": false, "attacker_notes_shown": 0}
+{"style": "mimic", "attributed": false, "topic": "india", "reply": "26", "outcome": "false", "attacker_rank1": false, "attacker_notes_shown": 0}
+{"style": "mimic", "attributed": true, "topic": "india", "reply": "26", "outcome": "false", "attacker_rank1": false, "attacker_notes_shown": 0}
+{"style": "mimic", "attributed": false, "topic": "kilo", "reply": "56", "outcome": "false", "attacker_rank1": false, "attacker_notes_shown": 0}
+{"style": "mimic", "attributed": true, "topic": "kilo", "reply": "56", "outcome": "false", "attacker_rank1": false, "attacker_notes_shown": 0}
+{"style": "mimic", "attributed": false, "topic": "papa", "reply": "79", "outcome": "false", "attacker_rank1": false, "attacker_notes_shown": 0}
+{"style": "mimic", "attributed": true, "topic": "papa", "reply": "79", "outcome": "false", "attacker_rank1": false, "attacker_notes_shown": 0}
+{"style": "mimic", "attributed": false, "topic": "charlie", "reply": "52", "outcome": "false", "attacker_rank1": false, "attacker_notes_shown": 1}
+{"style": "mimic", "attributed": true, "topic": "charlie", "reply": "52", "outcome": "false", "attacker_rank1": false, "attacker_notes_shown": 1}
+{"style": "mimic", "attributed": false, "topic": "sierra", "reply": "23", "outcome": "false", "attacker_rank1": false, "attacker_notes_shown": 1}
+{"style": "mimic", "attributed": true, "topic": "sierra", "reply": "23", "outcome": "false", "attacker_rank1": false, "attacker_notes_shown": 1}
+{
+ "mimic|plain_notes": {
+  "n": 20,
+  "false_rate": 0.8,
+  "true_rate": 0.2,
+  "attacker_rank1_rate": 0.05
+ },
+ "mimic|attributed": {
+  "n": 20,
+  "false_rate": 0.7,
+  "true_rate": 0.3,
+  "attacker_rank1_rate": 0.05
+ }
+}
