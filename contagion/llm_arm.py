@@ -44,10 +44,13 @@ def main() -> None:
     ap.add_argument("--model", default="qwen3.8-fast:latest")
     ap.add_argument("--tasks", type=int, default=20)
     ap.add_argument("--port", type=int, default=7300)
+    ap.add_argument("--styles", default=",".join(STYLES), help="comma-separated attacker styles to test")
     args = ap.parse_args()
     keys = build_template()
     rows = []
-    for s_i, style in enumerate(STYLES):
+    styles = [x for x in args.styles.split(",") if x]
+    for style in styles:
+        s_i = STYLES.index(style)
         topics = make_topics(args.tasks, random.Random(100 + s_i))
         with HippoServer(args.port, CACHE / "work" / f"llm-{style}", keys) as hippo:
             authors: dict[str, str] = {}
@@ -72,7 +75,7 @@ def main() -> None:
     out = ROOT / "results"
     (out / "llm_arm.json").write_text(json.dumps(rows, indent=1))
     summary = {}
-    for style in STYLES:
+    for style in styles:
         for attributed in (False, True):
             rs = [r for r in rows if r["style"] == style and r["attributed"] == attributed]
             summary[f"{style}|{'attributed' if attributed else 'plain_notes'}"] = {

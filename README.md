@@ -4,6 +4,23 @@ A small benchmark that asks one question: **if one agent in a team turns bad and
 
 Built over the Apart Research Swarm Alignment Sprint weekend (6 to 8 November 2026), Track 2, by Kit Fun So (KITFUNSO LTD, London). The report is in the sprint submission. The code, results and figures are all here.
 
+## Headline results (720 runs, 10 seeds per cell)
+
+Insider attacker in the team template ("mimic") style, 6 agents, from `results/table_main.csv`:
+
+| Defence | Share of honest agents infected, mean [min, max] | Work per task (no attack) | Correct memories blocked (no attack) |
+|---|---|---|---|
+| none | 0.92 [0.6, 1.0] | 0.17 (0.15) | 0.0 |
+| source attribution | 0.50 [0.0, 1.0] | 0.18 (0.16) | 0.0 |
+| independent verification | 0.00 [0.0, 0.0] | 1.15 (1.10) | 6.3 |
+| conflict alerts | 0.00 [0.0, 0.0] | 0.26 (0.17) | 0.0 |
+| quarantine | 0.60 [0.0, 1.0] | 0.19 (0.15) | 7.7 |
+| all four | 0.00 [0.0, 0.0] | 1.15 (1.11) | 6.2 |
+
+- With no defence, spread keeps rising after the attacker leaves. Honest agents rewrite the false fact under their own names: 21.2 of the 47.2 false memories still live at the end were written by honest agents.
+- Against a newcomer, quarantine cuts spread from 0.94 to 0.20. Against an insider it reaches only 0.60.
+- hippo-memory 3.3.3's built-in conflict detector (run in `hippo sleep`) flags an always/never pair but not "is 3" against "is 9" (`scripts/hippo_conflict_check.sh`). The conflict defence here uses an exact check on structured values, so its result is an upper bound for a text-level detector.
+
 ## Reproduce in one command
 
 Needs Node 22.16+ and Python 3.12+.

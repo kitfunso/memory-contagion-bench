@@ -66,7 +66,8 @@ class Run:
         self.agents = [f"agent-{i}" for i in range(c.n_agents)]
         self.attacker = self.agents[-1] if c.attacked else None
         late = self.agents[-1] if c.scenario == "newcomer" else None
-        self.joined = {a: (0 if a == late else -1) for a in self.agents}
+        # Founders joined long before the run, so quarantine never treats them as new.
+        self.joined = {a: (0 if a == late else -10 * c.rounds) for a in self.agents}
         self.evidence = {a: {t.idx: self.rng.random() < c.p_evidence for t in self.topics} for a in self.agents}
         self.ledger: dict[str, Mem] = {}
         self.n_local = 0
