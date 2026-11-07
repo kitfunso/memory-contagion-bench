@@ -1,0 +1,14 @@
+{
+  "name": "memory-contagion-bench",
+  "version": "0.1.0",
+  "description": "Benchmark: how one compromised agent poisons a team through shared hippo-memory, and which defences contain it",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "type": "commonjs",
+  "dependencies": {
+    "hippo-memory": "^3.3.3"
+  },
+  "private": true
+}
